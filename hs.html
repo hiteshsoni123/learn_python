@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Learning Hub - Interactive Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --light: #F9FAFB;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 2rem 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo i {
+            font-size: 2.5rem;
+        }
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .subtitle {
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        nav {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .nav-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .nav-btn.active {
+            background: var(--white);
+            color: var(--primary);
+        }
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        .card-title i {
+            font-size: 1.8rem;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .comparison-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        .comparison-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+        .framework-diagram {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .framework-components {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .component {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            width: 180px;
+            box-shadow: var(--shadow);
+            margin: 0.5rem;
+        }
+        .component i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .component-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .playground {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        .btn-secondary {
+            background: var(--secondary);
+        }
+        .btn-secondary:hover {
+            background: #059669;
+        }
+        .result-box {
+            background: #1E293B;
+            color: #E2E8F0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            font-family: 'Courier New', monospace;
+            min-height: 100px;
+            position: relative;
+        }
+        .result-box.empty:before {
+            content: "Results will appear here...";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #94A3B8;
+            font-style: italic;
+        }
+        .code-block {
+            background: #1E293B;
+            color: #E2E8F0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .code-block .comment {
+            color: #94A3B8;
+        }
+        .code-block .keyword {
+            color: #C084FC;
+        }
+        .code-block .string {
+            color: #86EFAC;
+        }
+        .code-block .function {
+            color: #60A5FA;
+        }
+        .code-block .number {
+            color: #FBBF24;
+        }
+        .highlight {
+            background-color: rgba(79, 70, 229, 0.1);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .syntax-diagram {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+        }
+        .syntax-part {
+            margin-bottom: 10px;
+        }
+        .syntax-label {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        .example-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .example-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--secondary);
+        }
+        .example-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+        .tips-section {
+            background: #FEF3C7;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid #F59E0B;
+        }
+        .tips-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #92400E;
+        }
+        .tips-list {
+            list-style-type: none;
+        }
+        .tips-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .tips-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .notification.error {
+            border-left-color: #EF4444;
+        }
+        .notification.warning {
+            border-left-color: #F59E0B;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            color: var(--gray);
+            border-top: 1px solid #E5E7EB;
+        }
+        .decorator-demo {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .demo-card {
+            flex: 1;
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        .demo-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+        .demo-output {
+            background: #1E293B;
+            color: #E2E8F0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            min-height: 80px;
+        }
+        .error-handling-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .demo-checkbox {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .demo-checkbox input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        .standards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .standards-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        .standards-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .standards-list {
+            list-style-type: none;
+        }
+        .standards-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .standards-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .code-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .type-demo {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .logo {
+                margin-bottom: 1rem;
+            }
+            nav {
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            .example-grid {
+                grid-template-columns: 1fr;
+            }
+            .framework-components {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .decorator-demo {
+                flex-direction: column;
+            }
+            .error-handling-demo {
+                grid-template-columns: 1fr;
+            }
+            .code-comparison {
+                grid-template-columns: 1fr;
+            }
+            .type-demo {
+                flex-direction: column;
+            }
+            .standards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-python"></i>
+                    <div>
+                        <h1>Python Learning</h1>
+                        <div class="subtitle">Interactive Learning Experience</div>
+                        <div class="subtitle">
+                            <a href="https://klaimify.in/" style="color: yellow;">
+                                Klaimify Pvt. Ltd.
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <nav>
+                    <button class="nav-btn active" onclick="showSection('python')">
+                        <i class="fas fa-laptop-code"></i> Python
+                    </button>
+                    <button class="nav-btn" onclick="showSection('list-comprehension')">
+                        <i class="fas fa-list"></i> List Comprehensions
+                    </button>
+                    <button class="nav-btn" onclick="showSection('decorators')">
+                        <i class="fas fa-magic"></i> Decorators
+                    </button>
+                    <button class="nav-btn" onclick="showSection('error-handling')">
+                        <i class="fas fa-exclamation-triangle"></i> Error Handling
+                    </button>
+                    <button class="nav-btn" onclick="showSection('type-hints')">
+                        <i class="fas fa-code"></i> Type Hints
+                    </button>
+                    <button class="nav-btn" onclick="showSection('coding-standards')">
+                        <i class="fas fa-book"></i> Coding Standards
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Python Section -->
+        <section id="python" class="section active">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-info-circle"></i>
+                    What is Python?
+                </div>
+                <p>A programming language is a special way to communicate with a computer. Just like we use Hindi, English, or Gujarati to talk with people, we use Python, Java, C, etc. to talk with computers.</p>
+                
+                <div class="comparison">
+                    <div class="comparison-card">
+                        <div class="comparison-title">Procedural Oriented Programming (POP)</div>
+                        <ul>
+                            <li>Program = Step-by-step instructions (functions)</li>
+                            <li>Data and functions are separate</li>
+                            <li>Example: C language</li>
+                            <li>Think of it like a recipe card – just steps written down</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <div class="comparison-title">Object-Oriented Programming (OOP)</div>
+                        <ul>
+                            <li>Program = Objects (things) that have data + actions</li>
+                            <li>Data and functions are together in one place</li>
+                            <li>Example: C++, Java, Python</li>
+                            <li>Think of it like a chef – knows both the recipe (data) and how to cook (actions)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-cubes"></i>
+                    Frameworks
+                </div>
+                <p><span class="highlight">Framework = Programming Language + Predefined Architecture + Tools/Libraries</span></p>
+                
+                <div class="framework-diagram">
+                    <h3>Frappe Framework</h3>
+                    <div class="framework-components">
+                        <div class="component">
+                            <i class="fab fa-python"></i>
+                            <div class="component-title">Python</div>
+                            <div>Backend Language</div>
+                        </div>
+                        <div class="component">
+                            <i class="fab fa-js"></i>
+                            <div class="component-title">JavaScript</div>
+                            <div>Frontend Language</div>
+                        </div>
+                        <div class="component">
+                            <i class="fas fa-sitemap"></i>
+                            <div class="component-title">MVC</div>
+                            <div>Architecture</div>
+                        </div>
+                        <div class="component">
+                            <i class="fas fa-tools"></i>
+                            <div class="component-title">Tools</div>
+                            <div>Doctype, Reports, API</div>
+                        </div>
+                    </div>
+                    <p>Frappe is a full-stack web application framework. It is the base for ERPNext and other custom business applications.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- List Comprehensions Section -->
+        <section id="list-comprehension" class="section">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-list"></i>
+                    List Comprehensions
+                </div>
+                
+                <ul>
+                    <li><span class="highlight">What is:</span> A short way to create lists in Python using a single line of code</li>
+                    <li><span class="highlight">Comes from:</span> Comes from Python's loops and list data type</li>
+                    <li><span class="highlight">Why:</span> It makes code shorter, faster, and more readable than using loops</li>
+                </ul>
+                
+                <div class="syntax-diagram">
+                    <div class="code-block">
+                        [expression for item in iterable if condition]
+                    </div>
+                    
+                    <div class="syntax-part">
+                        <span class="syntax-label">expression</span> → What you want to store in the list
+                    </div>
+                    <div class="syntax-part">
+                        <span class="syntax-label">item</span> → Variable that takes values from the iterable (like numbers, string, list)
+                    </div>
+                    <div class="syntax-part">
+                        <span class="syntax-label">iterable</span> → A sequence (like list, range, string)
+                    </div>
+                    <div class="syntax-part">
+                        <span class="syntax-label">condition (optional)</span> → Filter (only include items if condition is true)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Simple Example
+                </div>
+                
+                <div class="example-grid">
+                    <div class="example-card">
+                        <div class="example-title">Normal Way (Without List Comprehension)</div>
+                        <div class="code-block">
+                            <span class="keyword">squares</span> = []<br>
+                            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(1, 6):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;squares.<span class="function">append</span>(i * i)
+                        </div>
+                    </div>
+                    
+                    <div class="example-card">
+                        <div class="example-title">Pythonic Way (With List Comprehension)</div>
+                        <div class="code-block">
+                            <span class="keyword">squares</span> = [i * i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(1, 6)]
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <div class="example-title">Real-time Example (Frappe)</div>
+                    <p>In Frappe report: <code>[po.name for po in purchase_orders]</code> to get PO numbers.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-play"></i>
+                    Interactive Playground
+                </div>
+                
+                <div class="playground">
+                    <div class="input-group">
+                        <label for="numbers-input">Enter numbers (comma separated):</label>
+                        <input type="text" id="numbers-input" placeholder="e.g., 1, 2, 3, 4, 5" value="1, 2, 3, 4, 5">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="operation-select">Select operation:</label>
+                        <select id="operation-select">
+                            <option value="square">Square (x²)</option>
+                            <option value="cube">Cube (x³)</option>
+                            <option value="double">Double (2x)</option>
+                            <option value="even">Even numbers only</option>
+                            <option value="odd">Odd numbers only</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn" onclick="processListComprehension()">
+                        <i class="fas fa-calculator"></i> Process List
+                    </button>
+                    
+                    <div class="result-box empty" id="result-box"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Common Mistakes & Tips
+                </div>
+                
+                <div class="tips-section">
+                    <div class="tips-title">
+                        <i class="fas fa-times-circle"></i>
+                        Common Mistakes
+                    </div>
+                    <ul class="tips-list">
+                        <li>Making it too complex with nested conditions</li>
+                        <li>Using it when a simple loop is better</li>
+                    </ul>
+                </div>
+                
+                <div class="tips-section" style="background: #D1FAE5; border-left-color: var(--secondary);">
+                    <div class="tips-title" style="color: #065F46;">
+                        <i class="fas fa-check-circle"></i>
+                        Tips to Avoid Issues
+                    </div>
+                    <ul class="tips-list">
+                        <li>Keep it short and simple</li>
+                        <li>Use proper variable names</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Decorators Section -->
+        <section id="decorators" class="section">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-magic"></i>
+                    Decorators
+                </div>
+                
+                <ul>
+                    <li><span class="highlight">What is:</span> A way to add extra functionality to a function without changing its code.</li>
+                    <li><span class="highlight">Comes from:</span> Based on Python functions (first-class objects) and higher-order functions.</li>
+                    <li><span class="highlight">Why:</span> Helps reuse code, add logging, permissions, or validation easily.</li>
+                </ul>
+                
+                <div class="syntax-diagram">
+                    <div class="code-block">
+                        @decorator_name<br>
+                        <span class="keyword">def</span> <span class="function">function_name</span>():<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># function code</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Simple Example
+                </div>
+                
+                <div class="example-card">
+                    <div class="example-title">Login Required Decorator</div>
+                    <div class="code-block">
+                        @login_required<br>
+                        <span class="keyword">def</span> <span class="function">dashboard</span>():<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Only accessible if user is logged in</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">pass</span>
+                    </div>
+                </div>
+                
+                <div class="example-card" style="margin-top: 1.5rem;">
+                    <div class="example-title">Real-time Example (Frappe)</div>
+                    <p>In Frappe: <code>@frappe.whitelist()</code> to allow calling function from client-side.</p>
+                    <div class="code-block">
+                        <span class="keyword">import</span> frappe<br><br>
+                        @frappe.whitelist()<br>
+                        <span class="keyword">def</span> <span class="function">get_customer_data</span>(customer_name):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># This function can be called from client-side JS</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> frappe.get_doc(<span class="string">"Customer"</span>, customer_name)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-play"></i>
+                    Interactive Demo
+                </div>
+                
+                <div class="decorator-demo">
+                    <div class="demo-card">
+                        <div class="demo-title">Without Decorator</div>
+                        <div class="code-block">
+                            <span class="keyword">def</span> <span class="function">greet</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Hello, World!"</span>
+                        </div>
+                        <button class="btn" onclick="runWithoutDecorator()">
+                            <i class="fas fa-play"></i> Run Function
+                        </button>
+                        <div class="demo-output" id="without-decorator-output"></div>
+                    </div>
+                    
+                    <div class="demo-card">
+                        <div class="demo-title">With Decorator</div>
+                        <div class="code-block">
+                            @log_decorator<br>
+                            <span class="keyword">def</span> <span class="function">greet</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Hello, World!"</span>
+                        </div>
+                        <button class="btn" onclick="runWithDecorator()">
+                            <i class="fas fa-play"></i> Run Decorated Function
+                        </button>
+                        <div class="demo-output" id="with-decorator-output"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Common Mistakes & Tips
+                </div>
+                
+                <div class="tips-section">
+                    <div class="tips-title">
+                        <i class="fas fa-times-circle"></i>
+                        Common Mistakes
+                    </div>
+                    <ul class="tips-list">
+                        <li>Forgetting to return the function</li>
+                        <li>Using decorator unnecessarily</li>
+                    </ul>
+                </div>
+                
+                <div class="tips-section" style="background: #D1FAE5; border-left-color: var(--secondary);">
+                    <div class="tips-title" style="color: #065F46;">
+                        <i class="fas fa-check-circle"></i>
+                        Tips to Avoid Issues
+                    </div>
+                    <ul class="tips-list">
+                        <li>Use meaningful names</li>
+                        <li>Document why the decorator is used</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Handling Section -->
+        <section id="error-handling" class="section">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Error Handling
+                </div>
+                
+                <ul>
+                    <li><span class="highlight">What is:</span> A way to manage errors in code without crashing the program.</li>
+                    <li><span class="highlight">Comes from:</span> Comes from Python's try-except block.</li>
+                    <li><span class="highlight">Why:</span> Prevents application from stopping due to small errors.</li>
+                </ul>
+                
+                <div class="syntax-diagram">
+                    <div class="code-block">
+                        <span class="keyword">try</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># code that might cause an error</span><br>
+                        <span class="keyword">except</span> ExceptionType:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># code to handle the error</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Simple Example
+                </div>
+                
+                <div class="example-grid">
+                    <div class="example-card">
+                        <div class="example-title">Without Error Handling</div>
+                        <div class="code-block">
+                            <span class="comment"># This will crash if user enters 0</span><br>
+                            num = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter a number: "</span>))<br>
+                            result = <span class="number">100</span> / num<br>
+                            <span class="function">print</span>(result)
+                        </div>
+                    </div>
+                    
+                    <div class="example-card">
+                        <div class="example-title">With Error Handling</div>
+                        <div class="code-block">
+                            <span class="keyword">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;num = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter a number: "</span>))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = <span class="number">100</span> / num<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(result)<br>
+                            <span class="keyword">except</span> ZeroDivisionError:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Please don't enter zero!"</span>)<br>
+                            <span class="keyword">except</span> ValueError:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Please enter a valid number!"</span>)<br>
+                            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">f"Some other error occurred: {e}"</span>)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-card" style="margin-top: 1.5rem;">
+                    <div class="example-title">Real-time Example (Frappe)</div>
+                    <p>In Frappe: while fetching data from DB, handle cases where no record exists.</p>
+                    <div class="code-block">
+                        <span class="keyword">try</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;doc = frappe.get_doc(<span class="string">"Customer"</span>, customer_name)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> doc<br>
+                        <span class="keyword">except</span> frappe.DoesNotExistError:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;frappe.throw(<span class="string">f"Customer {customer_name} not found"</span>)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-play"></i>
+                    Interactive Demo
+                </div>
+                
+                <div class="error-handling-demo">
+                    <div class="demo-card">
+                        <div class="demo-title">Division Example</div>
+                        <div class="input-group">
+                            <label for="division-input">Enter a number to divide 100:</label>
+                            <input type="text" id="division-input" placeholder="e.g., 5, 0, abc">
+                        </div>
+                        <button class="btn" onclick="runDivisionExample()">
+                            <i class="fas fa-calculator"></i> Calculate
+                        </button>
+                        <div class="demo-output" id="division-output"></div>
+                    </div>
+                    
+                    <div class="demo-card">
+                        <div class="demo-title">File Reading Example</div>
+                        <div class="input-group">
+                            <label>Simulate file reading:</label>
+                            <div class="demo-checkbox">
+                                <input type="checkbox" id="file-exists">
+                                <label for="file-exists">File exists</label>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="runFileExample()">
+                            <i class="fas fa-file"></i> Read File
+                        </button>
+                        <div class="demo-output" id="file-output"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Common Mistakes & Tips
+                </div>
+                
+                <div class="tips-section">
+                    <div class="tips-title">
+                        <i class="fas fa-times-circle"></i>
+                        Common Mistakes
+                    </div>
+                    <ul class="tips-list">
+                        <li>Catching all errors with 'except:'</li>
+                        <li>Not logging the error</li>
+                    </ul>
+                </div>
+                
+                <div class="tips-section" style="background: #D1FAE5; border-left-color: var(--secondary);">
+                    <div class="tips-title" style="color: #065F46;">
+                        <i class="fas fa-check-circle"></i>
+                        Tips to Avoid Issues
+                    </div>
+                    <ul class="tips-list">
+                        <li>Always catch specific exceptions</li>
+                        <li>Log errors for debugging</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Type Hints Section -->
+        <section id="type-hints" class="section">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-code"></i>
+                    Type Hints
+                </div>
+                
+                <ul>
+                    <li><span class="highlight">What is:</span> Way to tell Python and developers what type of value a variable or function expects.</li>
+                    <li><span class="highlight">Comes from:</span> Introduced in Python 3.5 with the typing module.</li>
+                    <li><span class="highlight">Why:</span> Improves readability, reduces bugs, helps tools like mypy check code.</li>
+                </ul>
+                
+                <div class="syntax-diagram">
+                    <div class="code-block">
+                        <span class="keyword">def</span> <span class="function">function_name</span>(parameter: type) -> return_type:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># function code</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Simple Example
+                </div>
+                
+                <div class="code-comparison">
+                    <div class="example-card">
+                        <div class="example-title">Without Type Hints</div>
+                        <div class="code-block">
+                            <span class="keyword">def</span> <span class="function">greet</span>(name):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">f"Hello, {name}"</span><br><br>
+                            result = greet(<span class="string">"Amit"</span>) <span class="comment"># Works</span><br>
+                            result = greet(<span class="number">123</span>)    <span class="comment"># Also works, but might cause error later</span>
+                        </div>
+                    </div>
+                    
+                    <div class="example-card">
+                        <div class="example-title">With Type Hints</div>
+                        <div class="code-block">
+                            <span class="keyword">def</span> <span class="function">greet</span>(name: <span class="keyword">str</span>) -> <span class="keyword">str</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">f"Hello, {name}"</span><br><br>
+                            result = greet(<span class="string">"Amit"</span>) <span class="comment"># Good</span><br>
+                            result = greet(<span class="number">123</span>)    <span class="comment"># Your IDE will highlight this as a potential problem</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-card" style="margin-top: 1.5rem;">
+                    <div class="example-title">Real-time Example (Frappe)</div>
+                    <p>In Frappe reports: <code>def execute(filters: dict) -> tuple[list, list]:</code></p>
+                    <div class="code-block">
+                        @frappe.whitelist()<br>
+                        <span class="keyword">def</span> <span class="function">update_item_price</span>(item_code: <span class="keyword">str</span>, new_rate: <span class="keyword">float</span>) -> <span class="keyword">dict</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"""Updates the standard rate of an item."""</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;doc = frappe.get_doc(<span class="string">"Item"</span>, item_code)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;doc.standard_rate = new_rate<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;doc.save()<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> {<span class="string">"status"</span>: <span class="string">"success"</span>, <span class="string">"new_rate"</span>: new_rate}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-play"></i>
+                    Interactive Demo
+                </div>
+                
+                <div class="type-demo">
+                    <div class="demo-card">
+                        <div class="demo-title">Area Calculator</div>
+                        <div class="input-group">
+                            <label for="length-input">Length:</label>
+                            <input type="text" id="length-input" placeholder="e.g., 5.5">
+                        </div>
+                        <div class="input-group">
+                            <label for="width-input">Width:</label>
+                            <input type="text" id="width-input" placeholder="e.g., 3.2">
+                        </div>
+                        <button class="btn" onclick="runAreaCalculator()">
+                            <i class="fas fa-calculator"></i> Calculate Area
+                        </button>
+                        <div class="demo-output" id="area-output"></div>
+                    </div>
+                    
+                    <div class="demo-card">
+                        <div class="demo-title">Type Hints in Action</div>
+                        <div class="code-block">
+                            <span class="keyword">def</span> <span class="function">calculate_area</span>(length: <span class="keyword">float</span>, width: <span class="keyword">float</span>) -> <span class="keyword">float</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> length * width
+                        </div>
+                        <p>Type hints help you understand what types of values to pass to the function and what type to expect back.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Common Mistakes & Tips
+                </div>
+                
+                <div class="tips-section">
+                    <div class="tips-title">
+                        <i class="fas fa-times-circle"></i>
+                        Common Mistakes
+                    </div>
+                    <ul class="tips-list">
+                        <li>Using wrong type hint</li>
+                        <li>Thinking it forces type (Python does not enforce)</li>
+                    </ul>
+                </div>
+                
+                <div class="tips-section" style="background: #D1FAE5; border-left-color: var(--secondary);">
+                    <div class="tips-title" style="color: #065F46;">
+                        <i class="fas fa-check-circle"></i>
+                        Tips to Avoid Issues
+                    </div>
+                    <ul class="tips-list">
+                        <li>Use hints for function arguments and return types</li>
+                        <li>Follow PEP 484</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- General Coding Standards Section -->
+        <section id="coding-standards" class="section">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-book"></i>
+                    Naming Conventions, Design Standards, Formatting Rules
+                </div>
+                
+                <p>Follow these to write clean, professional Python code that everyone can understand easily.</p>
+                
+                <div class="standards-grid">
+                    <div class="standards-card">
+                        <div class="standards-title">
+                            <i class="fas fa-signature"></i>
+                            Naming Conventions (PEP 8)
+                        </div>
+                        <ul class="standards-list">
+                            <li>Variables & Functions: Use snake_case (e.g., customer_name, calculate_total())</li>
+                            <li>Classes: Use PascalCase (e.g., SalesInvoice, CustomReport)</li>
+                            <li>Constants: Use UPPER_SNAKE_CASE (e.g., STATUS_ACTIVE = "Active")</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="standards-card">
+                        <div class="standards-title">
+                            <i class="fas fa-drafting-compass"></i>
+                            Design Standards
+                        </div>
+                        <ul class="standards-list">
+                            <li>DRY (Don't Repeat Yourself): If you are writing the same code twice, make it a function</li>
+                            <li>KISS (Keep It Simple, Stupid): Write simple, straightforward code. Avoid being too clever</li>
+                            <li>Functions should do one thing: A function should have a single, clear purpose</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="standards-card">
+                        <div class="standards-title">
+                            <i class="fas fa-ruler-combined"></i>
+                            Formatting Rules (PEP 8)
+                        </div>
+                        <ul class="standards-list">
+                            <li>Indentation: Use 4 spaces per indentation level. Never use tabs</li>
+                            <li>Line Length: Try to limit lines to a maximum of 79 characters</li>
+                            <li>Spaces: Use spaces around operators (=, +, -) and after commas</li>
+                            <li>Use a linter: Use tools like Flake8 or black (auto-formatter) in your VS Code to automatically check your style</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Examples
+                </div>
+                
+                <div class="example-grid">
+                    <div class="example-card">
+                        <div class="example-title">Good Naming</div>
+                        <div class="code-block">
+                            <span class="comment"># Good naming</span><br>
+                            <span class="keyword">def</span> <span class="function">calculate_total_price</span>(items: <span class="keyword">list</span>) -> <span class="keyword">float</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;total = <span class="number">0</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> item <span class="keyword">in</span> items:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total += item.price<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total
+                        </div>
+                    </div>
+                    
+                    <div class="example-card">
+                        <div class="example-title">Poor Naming</div>
+                        <div class="code-block">
+                            <span class="comment"># Poor naming</span><br>
+                            <span class="keyword">def</span> <span class="function">calc</span>(x):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;s = <span class="number">0</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> i <span class="keyword">in</span> x:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s += i[<span class="number">1</span>]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> s
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-card" style="margin-top: 1.5rem;">
+                    <div class="example-title">Real-time Example (Frappe)</div>
+                    <div class="code-block">
+                        <span class="keyword">class</span> <span class="function">SalesInvoice</span>(frappe.model.document.Document):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="function">validate</span>(<span class="keyword">self</span>) -> <span class="keyword">None</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Check if customer has credit limit</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> <span class="keyword">self</span>.credit_limit <span class="keyword">and</span> <span class="keyword">self</span>.grand_total > <span class="keyword">self</span>.credit_limit:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frappe.throw(<span class="string">"Credit limit exceeded"</span>)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Common Mistakes & Tips
+                </div>
+                
+                <div class="tips-section">
+                    <div class="tips-title">
+                        <i class="fas fa-times-circle"></i>
+                        Common Mistakes
+                    </div>
+                    <ul class="tips-list">
+                        <li>Using inconsistent naming conventions</li>
+                        <li>Writing functions that do too many things</li>
+                        <li>Not following PEP 8 formatting rules</li>
+                    </ul>
+                </div>
+                
+                <div class="tips-section" style="background: #D1FAE5; border-left-color: var(--secondary);">
+                    <div class="tips-title" style="color: #065F46;">
+                        <i class="fas fa-check-circle"></i>
+                        Tips for Freshers
+                    </div>
+                    <ul class="tips-list">
+                        <li>Always ask "Why?" and practice by reading Frappe's own source code</li>
+                        <li>Use snake_case for variables and functions (e.g., purchase_order_list)</li>
+                        <li>Use PascalCase for class names (e.g., PurchaseOrderReport)</li>
+                        <li>Keep functions short and focused</li>
+                        <li>Write comments for complex logic</li>
+                        <li>Format code using tools like black or flake8</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 Python Learning Hub | Created for Beginners</p>
+        </div>
+    </footer>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-message">Notification message</span>
+    </div>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notification-message');
+            
+            messageElement.textContent = message;
+            notification.className = 'notification show';
+            
+            if (type === 'error') {
+                notification.classList.add('error');
+            } else if (type === 'warning') {
+                notification.classList.add('warning');
+            }
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // List comprehension playground
+        function processListComprehension() {
+            const input = document.getElementById('numbers-input').value;
+            const operation = document.getElementById('operation-select').value;
+            const resultBox = document.getElementById('result-box');
+            
+            if (!input.trim()) {
+                showNotification('Please enter some numbers', 'warning');
+                return;
+            }
+            
+            try {
+                const numbers = input.split(',').map(n => parseFloat(n.trim()));
+                
+                let result;
+                let operationText;
+                let condition = '';
+                
+                switch(operation) {
+                    case 'square':
+                        result = numbers.map(n => n ** 2);
+                        operationText = 'x²';
+                        break;
+                    case 'cube':
+                        result = numbers.map(n => n ** 3);
+                        operationText = 'x³';
+                        break;
+                    case 'double':
+                        result = numbers.map(n => n * 2);
+                        operationText = '2x';
+                        break;
+                    case 'even':
+                        result = numbers.filter(n => n % 2 === 0);
+                        operationText = 'even numbers';
+                        condition = 'if n % 2 == 0';
+                        break;
+                    case 'odd':
+                        result = numbers.filter(n => n % 2 !== 0);
+                        operationText = 'odd numbers';
+                        condition = 'if n % 2 != 0';
+                        break;
+                }
+                
+                resultBox.classList.remove('empty');
+                resultBox.innerHTML = `
+                    <strong>Original:</strong> [${numbers.join(', ')}]<br>
+                    <strong>Result:</strong> [${result.join(', ')}]<br>
+                    <strong>Code:</strong> [${operation === 'even' || operation === 'odd' ? 'n' : operationText.replace('x', 'n')} for n in [${numbers.join(', ')}]${condition ? ' ' + condition : ''}]
+                `;
+                
+                showNotification('List processed successfully!');
+            } catch (error) {
+                showNotification('Invalid input. Please enter numbers only.', 'error');
+                console.error(error);
+            }
+        }
+
+        // Decorator demo functions
+        function runWithoutDecorator() {
+            const output = document.getElementById('without-decorator-output');
+            output.innerHTML = "Hello, World!";
+            showNotification('Function executed without decorator');
+        }
+
+        function runWithDecorator() {
+            const output = document.getElementById('with-decorator-output');
+            output.innerHTML = "Calling function: greet<br>Hello, World!<br>Finished calling: greet";
+            showNotification('Decorated function executed');
+        }
+
+        // Error handling demo functions
+        function runDivisionExample() {
+            const input = document.getElementById('division-input').value;
+            const output = document.getElementById('division-output');
+            
+            if (!input.trim()) {
+                showNotification('Please enter a number', 'warning');
+                return;
+            }
+            
+            try {
+                const num = parseFloat(input);
+                
+                // Check if it's a valid number
+                if (isNaN(num)) {
+                    throw new Error('Not a valid number');
+                }
+                
+                // Check for division by zero
+                if (num === 0) {
+                    throw new Error('Division by zero');
+                }
+                
+                const result = 100 / num;
+                output.innerHTML = `Result: ${result}`;
+                showNotification('Calculation completed successfully');
+            } catch (error) {
+                if (error.message === 'Not a valid number') {
+                    output.innerHTML = "Error: Please enter a valid number!";
+                } else if (error.message === 'Division by zero') {
+                    output.innerHTML = "Error: Please don't enter zero!";
+                } else {
+                    output.innerHTML = `Error: ${error.message}`;
+                }
+                showNotification('Error occurred', 'error');
+            }
+        }
+
+        function runFileExample() {
+            const fileExists = document.getElementById('file-exists').checked;
+            const output = document.getElementById('file-output');
+            
+            try {
+                if (!fileExists) {
+                    throw new Error('File not found');
+                }
+                
+                // Simulate reading file content
+                output.innerHTML = "File content: This is the report data.";
+                showNotification('File read successfully');
+            } catch (error) {
+                if (error.message === 'File not found') {
+                    output.innerHTML = "Error: Could not find the report file. Please generate it first.";
+                } else {
+                    output.innerHTML = `Error: ${error.message}`;
+                }
+                showNotification('Error occurred', 'error');
+            }
+        }
+
+        // Type hints demo function
+        function runAreaCalculator() {
+            const lengthInput = document.getElementById('length-input').value;
+            const widthInput = document.getElementById('width-input').value;
+            const output = document.getElementById('area-output');
+            
+            if (!lengthInput.trim() || !widthInput.trim()) {
+                showNotification('Please enter both length and width', 'warning');
+                return;
+            }
+            
+            try {
+                const length = parseFloat(lengthInput);
+                const width = parseFloat(widthInput);
+                
+                // Check if they are valid numbers
+                if (isNaN(length) || isNaN(width)) {
+                    throw new Error('Please enter valid numbers');
+                }
+                
+                const area = length * width;
+                output.innerHTML = `
+                    <strong>Length:</strong> ${length}<br>
+                    <strong>Width:</strong> ${width}<br>
+                    <strong>Area:</strong> ${area}<br>
+                    <strong>Type Hints Used:</strong> calculate_area(length: float, width: float) -> float
+                `;
+                
+                showNotification('Area calculated successfully!');
+            } catch (error) {
+                output.innerHTML = `Error: ${error.message}`;
+                showNotification('Error occurred', 'error');
+            }
+        }
+
+        // Initialize with first example
+        document.addEventListener('DOMContentLoaded', function() {
+            processListComprehension();
+        });
+    </script>
+</body>
+</html>
